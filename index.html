@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arras V3</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: white;
+}
+
+body {
+    background:
+        radial-gradient(circle at center, #303030 0%, #181818 55%, #0d0d0d 100%);
+}
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+#topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 62px;
+
+    background: rgba(30, 30, 30, 0.96);
+    border-bottom: 2px solid #555;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    z-index: 100;
+}
+
+#logo {
+    font-size: 29px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 2px 0 #000,
+        0 0 8px rgba(255,255,255,.15);
+}
+
+#logo span {
+    color: #63b5e8;
+}
+
+#version {
+    font-size: 13px;
+    color: #aaa;
+    margin-left: 8px;
+}
+
+.top-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.top-button {
+    border: 1px solid #666;
+    background: #292929;
+    color: #ddd;
+
+    padding: 8px 12px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.top-button:hover {
+    background: #3b3b3b;
+}
+
+/* =========================================================
+   GAME AREA
+   ========================================================= */
+
+#game {
+    position: absolute;
+    top: 62px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100% - 62px);
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        #191919;
+
+    background-size: 40px 40px;
+}
+
+/* =========================================================
+   LEFT TANK LIST
+   ========================================================= */
+
+#tankPanel {
+    position: absolute;
+
+    top: 15px;
+    left: 15px;
+    bottom: 15px;
+
+    width: 280px;
+
+    background: rgba(28,28,28,.96);
+
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.45);
+}
+
+#tankHeader {
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 13px;
+
+    border-bottom: 1px solid #555;
+
+    background: #252525;
+
+    font-weight: bold;
+}
+
+#search {
+    margin: 9px;
+
+    width: calc(100% - 18px);
+
+    padding: 9px;
+
+    background: #111;
+
+    border: 1px solid #555;
+    border-radius: 5px;
+
+    color: white;
+
+    outline: none;
+}
+
+#tankList {
+    height: calc(100% - 105px);
+
+    overflow-y: auto;
+
+    padding: 5px;
+}
+
+.tank-item {
+    display: flex;
+    align-items: center;
+
+    padding: 8px;
+
+    margin-bottom: 4px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    background: #252525;
+
+    border: 1px solid transparent;
+}
+
+.tank-item:hover {
+    background: #333;
+}
+
+.tank-item.selected {
+    background: #3a3a3a;
+    border-color: #75bde9;
+}
+
+.tank-dot {
+    width: 25px;
+    height: 25px;
+
+    margin-right: 10px;
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255,255,255,.6);
+}
+
+.tank-name {
+    font-weight: bold;
+}
+
+.tank-type {
+    display: block;
+    color: #999;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+/* =========================================================
+   CENTER TANK PREVIEW
+   ========================================================= */
+
+#preview {
+    position: absolute;
+
+    left: 315px;
+    right: 355px;
+
+    top: 15px;
+    bottom: 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#tankName {
+    font-size: 34px;
+
+    font-weight: bold;
+
+    text-shadow: 0 3px 3px #000;
+
+    margin-bottom: 5px;
+}
+
+#tankDescription {
+    color: #aaa;
+
+    max-width: 500px;
+
+    text-align: center;
+
+    margin-bottom: 28px;
+
+    line-height: 1.5;
+}
+
+#tankCanvas {
+    width: 300px;
+    height: 300px;
+
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,.55));
+}
+
+#abilities {
+    margin-top: 15px;
+
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    max-width: 600px;
+}
+
+.ability {
+    background: #252525;
+
+    border: 1px solid #666;
+
+    padding: 7px 10px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    color: #ddd;
+}
+
+/* =========================================================
+   STAT PANEL
+   ========================================================= */
+
+#statsPanel {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+
+    width: 330px;
+
+    background: rgba(28,28,28,.96);
+
+    border: 1px solid #555;
+
+    border-radius: 8px;
+
+    padding: 15px;
+
+    overflow-y: auto;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.45);
+}
+
+#statsTitle {
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+.stat {
+    margin-bottom: 12px;
+}
+
+.stat-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 4px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.stat-name {
+    color: #ddd;
+}
+
+.stat-value {
+    color: #aaa;
+}
+
+.bar {
+    height: 17px;
+
+    background: #777;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    border: 1px solid #333;
+}
+
+.fill {
+    height: 100%;
+
+    width: 50%;
+
+    border-radius: 10px;
+
+    transition: width .25s ease;
+}
+
+/* Stat colors matching the supplied style */
+
+.damage {
+    background: #e6785d;
+}
+
+.health {
+    background: #efc53f;
+}
+
+.bspeed {
+    background: #67cdb0;
+}
+
+.bhealth {
+    background: #72bb42;
+}
+
+.penetration {
+    background: #f2e96a;
+}
+
+.bdamage {
+    background: #e84545;
+}
+
+.reload {
+    background: #ddd;
+}
+
+.movement {
+    background: #3199c9;
+}
+
+.regen {
+    background: #e28ab9;
+}
+
+.shield {
+    background: #8164d6;
+}
+
+/* =========================================================
+   CUSTOM TANK BADGE
+   ========================================================= */
+
+.custom-badge {
+    display: inline-block;
+
+    margin-left: 7px;
+
+    padding: 2px 5px;
+
+    font-size: 9px;
+
+    border-radius: 3px;
+
+    background: #9b5de5;
+
+    color: white;
+}
+
+/* =========================================================
+   RANDOM BUTTON
+   ========================================================= */
+
+#randomButton {
+    margin-top: 20px;
+
+    padding: 12px 25px;
+
+    background: #3b3b3b;
+
+    border: 1px solid #777;
+
+    border-radius: 6px;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#randomButton:hover {
+    background: #555;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width: 1050px) {
+
+    #tankPanel {
+        width: 220px;
+    }
+
+    #preview {
+        left: 240px;
+        right: 300px;
+    }
+
+    #statsPanel {
+        width: 280px;
+    }
+}
+
+@media(max-width: 800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    #game {
+        overflow: auto;
+        height: auto;
+        min-height: calc(100% - 62px);
+    }
+
+    #tankPanel,
+    #statsPanel,
+    #preview {
+        position: relative;
+
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+
+        width: calc(100% - 30px);
+
+        margin: 15px;
+    }
+
+    #tankPanel {
+        height: 300px;
+    }
+
+    #statsPanel {
+        min-height: 400px;
+    }
+
+    #preview {
+        min-height: 500px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="topbar">
+
+    <div id="logo">
+        Arras <span>V3</span>
+        <span id="version">Tank Laboratory</span>
+    </div>
+
+    <div class="top-buttons">
+        <button class="top-button" onclick="randomTank()">
+            Random Tank
+        </button>
+
+        <button class="top-button" onclick="randomCustom()">
+            Random Custom
+        </button>
+    </div>
+
+</div>
+
+
+<div id="game">
+
+    <!-- =====================================================
+         TANK LIST
+         ===================================================== -->
+
+    <div id="tankPanel">
+
+        <div id="tankHeader">
+            TANK DATABASE
+        </div>
+
+        <input
+            id="search"
+            placeholder="Search tanks..."
+            oninput="filterTanks()"
+        >
+
+        <div id="tankList"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CENTER
+         ===================================================== -->
+
+    <div id="preview">
+
+        <div id="tankName">
+            Basic
+        </div>
+
+        <div id="tankDescription">
+            The standard Arras-style starting tank.
+        </div>
+
+        <canvas
+            id="tankCanvas"
+            width="300"
+            height="300">
+        </canvas>
+
+        <div id="abilities"></div>
+
+        <button
+            id="randomButton"
+            onclick="randomTank()">
+            RANDOMIZE TANK
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         STAT PANEL
+         ===================================================== -->
+
+    <div id="statsPanel">
+
+        <div id="statsTitle">
+            STATISTICS
+        </div>
+
+        <div id="stats"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STAT DEFINITIONS
+   ========================================================= */
+
+const statDefinitions = [
+
+    {
+        key: "bodyDamage",
+        name: "Body Damage",
+        css: "damage"
+    },
+
+    {
+        key: "maxHealth",
+        name: "Max Health",
+        css: "health"
+    },
+
+    {
+        key: "bulletSpeed",
+        name: "Bullet Speed",
+        css: "bspeed"
+    },
+
+    {
+        key: "bulletHealth",
+        name: "Bullet Health",
+        css: "bhealth"
+    },
+
+    {
+        key: "bulletPenetration",
+        name: "Bullet Penetration",
+        css: "penetration"
+    },
+
+    {
+        key: "bulletDamage",
+        name: "Bullet Damage",
+        css: "bdamage"
+    },
+
+    {
+        key: "reload",
+        name: "Reload",
+        css: "reload"
+    },
+
+    {
+        key: "movementSpeed",
+        name: "Movement Speed",
+        css: "movement"
+    },
+
+    {
+        key: "shieldRegeneration",
+        name: "Shield Regeneration",
+        css: "regen"
+    },
+
+    {
+        key: "shieldCapacity",
+        name: "Shield Capacity",
+        css: "shield"
+    }
+
+];
+
+
+/* =========================================================
+   CLASSIC / ORIGINAL-STYLE TANK DATABASE
+   ========================================================= */
+
+const originalNames = [
+
+    "Basic",
+
+    "Twin",
+    "Sniper",
+    "Machine Gun",
+    "Flank Guard",
+    "Smasher",
+    "Trapper",
+    "Director",
+
+    "Double Twin",
+    "Triple Shot",
+    "Quad Tank",
+    "Twin Flank",
+    "Triple Twin",
+
+    "Assassin",
+    "Hunter",
+    "Ranger",
+    "Predator",
+    "Stalker",
+
+    "Minigun",
+    "Gunner",
+    "Sprayer",
+    "Auto-Gunner",
+    "Streamliner",
+
+    "Tri-Angle",
+    "Booster",
+    "Fighter",
+    "Surfer",
+
+    "Destroyer",
+    "Hybrid",
+    "Annihilator",
+    "Skimmer",
+    "Rocketeer",
+
+    "Mega Trapper",
+    "Tri-Trapper",
+    "Gunner Trapper",
+    "Builder",
+    "Constructor",
+    "Engineer",
+    "Overtrapper",
+    "Septa-Trapper",
+    "Hexa-Trapper",
+
+    "Cruiser",
+    "Overseer",
+    "Overlord",
+    "Manager",
+    "Necromancer",
+    "Battleship",
+    "Carrier",
+    "Factory",
+
+    "Auto-3",
+    "Auto-5",
+    "Auto-Double",
+    "Auto-Trapper",
+    "Auto-Assassin",
+    "Auto-Smasher",
+    "Auto-Builder",
+    "Auto-Overseer",
+
+    "Octo Tank",
+    "Cyclone",
+    "Spreadshot",
+    "Penta Shot",
+    "Shotgun",
+
+    "Landmine",
+    "Spike",
+    "Mega-Smasher",
+    "Auto-Smasher",
+
+    "Single",
+    "Dual",
+    "Triple",
+    "Triplet",
+
+    "Gatling Gun",
+    "Nailgun",
+    "Machine Gunner",
+
+    "Pounder",
+    "Destroyer",
+    "Cannon",
+    "Mortar",
+    "Artillery",
+
+    "Booster",
+    "Fighter",
+    "Falcon",
+    "Eagle",
+    "Osprey",
+
+    "Healer",
+    "Ambulance",
+    "Paramedic",
+    "Surgeon",
+
+    "Drone Guard",
+    "Underseer",
+    "Overseer",
+    "Overlord",
+
+    "Hivemind",
+    "Inceptioner",
+
+    "Minelayer",
+    "Barricade",
+    "Conqueror",
+
+    "Pillbox",
+    "Constructor",
+    "Architect",
+
+    "Auto-Basic",
+    "Auto-Twin",
+    "Auto-Sniper",
+
+    "Twin Sniper",
+    "Rifle",
+    "Submachine",
+
+    "Shotgunner",
+    "Pelleter",
+
+    "Launcher",
+    "Exploder",
+    "Bombardier",
+
+    "Borer",
+    "Driller",
+
+    "Spawner",
+    "Producer",
+    "Creator",
+
+    "Factory",
+    "Battleship",
+    "Fortress"
+
+];
+
+
+/* Remove duplicate names */
+
+const uniqueOriginalNames = [...new Set(originalNames)];
+
+
+/* =========================================================
+   TWENTY NEW CUSTOM TANKS
+   ========================================================= */
+
+const customNames = [
+
+    "Voidcaster",
+    "Overdrive",
+    "Starforge",
+    "Pulse Tank",
+    "Mirage",
+    "Thunderbird",
+    "Gravity Well",
+    "Prism",
+    "Quasar",
+    "Tempest",
+    "Echo",
+    "Singularity",
+    "Aether",
+    "Chrono",
+    "Nebula",
+    "Titanium",
+    "Flux",
+    "Vortex",
+    "Solaris",
+    "Eclipse"
+
+];
+
+
+/* =========================================================
+   RANDOM ABILITIES
+   ========================================================= */
+
+const abilityPool = [
+
+    "Rapid Fire",
+    "Heavy Rounds",
+    "Regenerating Shield",
+    "Ricochet",
+    "Split Shot",
+    "Burst Fire",
+    "High Velocity",
+    "Armored Body",
+    "Long Range",
+    "Twin Turret",
+    "Auto Turret",
+    "Orbiting Drone",
+    "Pulse Shot",
+    "Critical Hits",
+    "Shield Boost",
+    "Afterburner",
+    "Phase Shift",
+    "Gravity Pulse",
+    "Energy Burst",
+    "Overcharge",
+    "Piercing Rounds",
+    "Projectile Echo",
+    "Double Barrel",
+    "Triple Barrel",
+    "Drone Swarm",
+    "Quick Turn",
+    "Heavy Chassis",
+    "Adaptive Armor",
+    "Recoil Boost",
+    "Regenerative Hull"
+
+];
+
+
+/* =========================================================
+   COLORS
+   ========================================================= */
+
+const tankColors = [
+
+    "#6aa84f",
+    "#4f81bd",
+    "#8e7cc3",
+    "#76a5af",
+    "#c27ba0",
+    "#e69138",
+    "#674ea7",
+    "#45818e",
+    "#3d85c6",
+    "#93c47d"
+
+];
+
+
+/* =========================================================
+   RANDOM NUMBER
+   ========================================================= */
+
+function random(min, max) {
+
+    return Math.floor(
+        Math.random() * (max - min + 1)
+    ) + min;
+
+}
+
+
+/* =========================================================
+   RANDOM STATS
+   ========================================================= */
+
+function createStats(custom = false) {
+
+    const stats = {};
+
+    statDefinitions.forEach(stat => {
+
+        if (custom) {
+
+            /*
+             * Custom tanks intentionally have different
+             * maximum values instead of using one universal cap.
+             */
+
+            stats[stat.key] = random(20, 100);
+
+        } else {
+
+            stats[stat.key] = random(25, 75);
+
+        }
+
+    });
+
+    return stats;
+
+}
+
+
+/* =========================================================
+   DIFFERENT STAT CAPS
+   ========================================================= */
+
+function createCaps(custom = false) {
+
+    const caps = {};
+
+    statDefinitions.forEach(stat => {
+
+        if (custom) {
+
+            /*
+             * Every custom tank gets an independently
+             * generated stat cap.
+             */
+
+            caps[stat.key] = random(60, 140);
+
+        } else {
+
+            caps[stat.key] = 100;
+
+        }
+
+    });
+
+    return caps;
+
+}
+
+
+/* =========================================================
+   RANDOM ABILITY GENERATOR
+   ========================================================= */
+
+function randomAbilities() {
+
+    const shuffled = [...abilityPool]
+        .sort(() => Math.random() - 0.5);
+
+    const amount = random(2, 5);
+
+    return shuffled.slice(0, amount);
+
+}
+
+
+/* =========================================================
+   CREATE TANK
+   ========================================================= */
+
+function createTank(name, custom = false) {
+
+    return {
+
+        name: name,
+
+        custom: custom,
+
+        color:
+            tankColors[
+                random(0, tankColors.length - 1)
+            ],
+
+        stats:
+            createStats(custom),
+
+        caps:
+            createCaps(custom),
+
+        abilities:
+            randomAbilities(),
+
+        description: custom
+
+            ? "A completely new Arras V3 experimental tank with randomly generated statistics and abilities."
+
+            : "A classic Arras-style tank configuration."
+
+    };
+
+}
+
+
+/* =========================================================
+   DATABASE
+   ========================================================= */
+
+const tanks = [];
+
+
+/* Add original tanks */
+
+uniqueOriginalNames.forEach(name => {
+
+    tanks.push(
+        createTank(name, false)
+    );
+
+});
+
+
+/* Add exactly twenty custom tanks */
+
+customNames.forEach(name => {
+
+    tanks.push(
+        createTank(name, true)
+    );
+
+});
+
+
+/* =========================================================
+   CURRENT TANK
+   ========================================================= */
+
+let selectedTank = tanks[0];
+
+
+/* =========================================================
+   RENDER TANK LIST
+   ========================================================= */
+
+function renderTankList(list = tanks) {
+
+    const container =
+        document.getElementById("tankList");
+
+    container.innerHTML = "";
+
+    list.forEach(tank => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "tank-item";
+
+        if (tank === selectedTank) {
+
+            item.classList.add("selected");
+
+        }
+
+        const dot =
+            document.createElement("div");
+
+        dot.className = "tank-dot";
+
+        dot.style.background =
+            tank.color;
+
+        const text =
+            document.createElement("div");
+
+        text.innerHTML = `
+
+            <div class="tank-name">
+
+                ${tank.name}
+
+                ${
+                    tank.custom
+                    ? `<span class="custom-badge">V3</span>`
+                    : ""
+                }
+
+            </div>
+
+            <span class="tank-type">
+
+                ${
+                    tank.custom
+                    ? "Experimental"
+                    : "Classic"
+                }
+
+            </span>
+
+        `;
+
+        item.appendChild(dot);
+
+        item.appendChild(text);
+
+        item.onclick = () => {
+
+            selectedTank = tank;
+
+            renderTankList();
+
+            renderTank();
+
+        };
+
+        container.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER STATS
+   ========================================================= */
+
+function renderStats(tank) {
+
+    const container =
+        document.getElementById("stats");
+
+    container.innerHTML = "";
+
+    statDefinitions.forEach(stat => {
+
+        const current =
+            tank.stats[stat.key];
+
+        const cap =
+            tank.caps[stat.key];
+
+        const percentage =
+            Math.min(
+                100,
+                (current / cap) * 100
+            );
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className = "stat";
+
+        wrapper.innerHTML = `
+
+            <div class="stat-top">
+
+                <span class="stat-name">
+                    ${stat.name}
+                </span>
+
+                <span class="stat-value">
+                    ${current} / ${cap}
+                </span>
+
+            </div>
+
+            <div class="bar">
+
+                <div
+                    class="fill ${stat.css}"
+                    style="width:${percentage}%">
+                </div>
+
+            </div>
+
+        `;
+
+        container.appendChild(wrapper);
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER ABILITIES
+   ========================================================= */
+
+function renderAbilities(tank) {
+
+    const container =
+        document.getElementById("abilities");
+
+    container.innerHTML = "";
+
+    tank.abilities.forEach(ability => {
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "ability";
+
+        element.textContent =
+            "◆ " + ability;
+
+        container.appendChild(element);
+
+    });
+
+}
+
+
+/* =========================================================
+   DRAW TANK
+   ========================================================= */
+
+function drawTank(tank) {
+
+    const canvas =
+        document.getElementById("tankCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /*
+     * Shadow
+     */
+
+    ctx.save();
+
+    ctx.translate(150, 150);
+
+    ctx.rotate(
+        Date.now() / 8000
+    );
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.35)";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        5,
+        8,
+        76,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+
+
+    /*
+     * Tank body
+     */
+
+    ctx.save();
+
+    ctx.translate(150, 150);
+
+    ctx.fillStyle =
+        tank.color;
+
+    ctx.strokeStyle =
+        "#222";
+
+    ctx.lineWidth = 6;
+
+
+    /*
+     * Body
+     */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        67,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    /*
+     * Random barrel count based
+     * loosely on tank identity.
+     */
+
+    let barrelCount = 1;
+
+    const lower =
+        tank.name.toLowerCase();
+
+    if (
+        lower.includes("twin") ||
+        lower.includes("dual")
+    ) {
+
+        barrelCount = 2;
+
+    }
+
+    if (
+        lower.includes("triple") ||
+        lower.includes("penta")
+    ) {
+
+        barrelCount = 3;
+
+    }
+
+    if (
+        lower.includes("octo")
+    ) {
+
+        barrelCount = 8;
+
+    }
+
+    if (tank.custom) {
+
+        barrelCount =
+            random(1, 5);
+
+    }
+
+
+    /*
+     * Draw barrels.
+     */
+
+    for (
+        let i = 0;
+        i < barrelCount;
+        i++
+    ) {
+
+        const angle =
+            (i / barrelCount) *
+            Math.PI * 2;
+
+        const width = 18;
+
+        const length = 60;
+
+        ctx.save();
+
+        ctx.rotate(angle);
+
+        ctx.fillStyle =
+            tank.color;
+
+        ctx.strokeStyle =
+            "#222";
+
+        ctx.lineWidth = 5;
+
+        ctx.fillRect(
+            -width / 2,
+            -85,
+            width,
+            length
+        );
+
+        ctx.strokeRect(
+            -width / 2,
+            -85,
+            width,
+            length
+        );
+
+        ctx.restore();
+
+    }
+
+
+    /*
+     * Center.
+     */
+
+    ctx.fillStyle =
+        tank.color;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        30,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.stroke();
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+   ========================================================= */
+
+function renderTank() {
+
+    document.getElementById(
+        "tankName"
+    ).innerHTML =
+
+        selectedTank.name +
+
+        (
+            selectedTank.custom
+            ? ` <span class="custom-badge">NEW</span>`
+            : ""
+        );
+
+
+    document.getElementById(
+        "tankDescription"
+    ).textContent =
+        selectedTank.description;
+
+
+    renderStats(
+        selectedTank
+    );
+
+    renderAbilities(
+        selectedTank
+    );
+
+    drawTank(
+        selectedTank
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+function filterTanks() {
+
+    const query =
+        document
+            .getElementById("search")
+            .value
+            .toLowerCase();
+
+    const filtered =
+        tanks.filter(tank =>
+
+            tank.name
+                .toLowerCase()
+                .includes(query)
+
+        );
+
+    renderTankList(filtered);
+
+}
+
+
+/* =========================================================
+   RANDOM TANK
+   ========================================================= */
+
+function randomTank() {
+
+    selectedTank =
+        tanks[
+            random(
+                0,
+                tanks.length - 1
+            )
+        ];
+
+    renderTankList();
+
+    renderTank();
+
+}
+
+
+/* =========================================================
+   RANDOM CUSTOM TANK
+   ========================================================= */
+
+function randomCustom() {
+
+    const customs =
+        tanks.filter(
+            tank => tank.custom
+        );
+
+    selectedTank =
+        customs[
+            random(
+                0,
+                customs.length - 1
+            )
+        ];
+
+    /*
+     * Give the selected custom tank
+     * another completely randomized build.
+     */
+
+    selectedTank.stats =
+        createStats(true);
+
+    selectedTank.caps =
+        createCaps(true);
+
+    selectedTank.abilities =
+        randomAbilities();
+
+    selectedTank.color =
+        tankColors[
+            random(
+                0,
+                tankColors.length - 1
+            )
+        ];
+
+    renderTankList();
+
+    renderTank();
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+renderTankList();
+
+renderTank();
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        /*
+         * R = random tank
+         */
+
+        if (
+            event.key.toLowerCase() === "r"
+        ) {
+
+            randomTank();
+
+        }
+
+
+        /*
+         * X = random custom tank
+         */
+
+        if (
+            event.key.toLowerCase() === "x"
+        ) {
+
+            randomCustom();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MAKE CUSTOM TANKS EXTRA RANDOM
+   ========================================================= */
+
+setInterval(() => {
+
+    /*
+     * Only redraw the preview so the
+     * page doesn't feel completely static.
+     */
+
+    if (
+        selectedTank &&
+        selectedTank.custom
+    ) {
+
+        drawTank(
+            selectedTank
+        );
+
+    }
+
+}, 1000);
+
+
+/* =========================================================
+   DEBUG INFORMATION
+   ========================================================= */
+
+console.log(
+    "ARRAS V3 loaded."
+);
+
+console.log(
+    "Classic tanks:",
+    uniqueOriginalNames.length
+);
+
+console.log(
+    "New custom tanks:",
+    customNames.length
+);
+
+console.log(
+    "Total tanks:",
+    tanks.length
+);
+
+</script>
+
+</body>
+</html>
